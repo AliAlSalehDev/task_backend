@@ -47,9 +47,14 @@ class CategoryService extends BaseService
         }
     }
 
+
+    // Override to check owner (user)
     public function index(): SharedMessage
     {
-        $categories = $this->model::all();
+        $userId = auth()->id();
+        $categories = $this->model::whereHas('menu', function ($q) use ($userId) {
+            $q->where('user_id', $userId);
+        })->paginate(10);
         return new SharedMessage(__('success.update_successful'), $this->resource::collection($categories), true, null, 200);
     }
 

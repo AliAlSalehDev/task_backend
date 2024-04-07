@@ -38,6 +38,14 @@ class MenuService extends BaseService
         }
     }
 
+    // Override to check owner (user)
+    public function index(): SharedMessage
+    {
+        $userId = auth()->id();
+        $categories = $this->model::where('user_id', $userId)->paginate(10);
+        return new SharedMessage(__('success.update_successful'), $this->resource::collection($categories), true, null, 200);
+    }
+
     public function update($data, $model): SharedMessage
     {
         try {

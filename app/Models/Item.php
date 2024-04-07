@@ -24,6 +24,11 @@ class Item extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function menu()
+    {
+        return $this->category->menu;
+    }
+
     public function discount(): morphOne
     {
         return $this->morphOne(Discount::class, 'discountable');
